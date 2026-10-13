@@ -1,0 +1,122 @@
+{
+  "schema": 2,
+  "kind": "players",
+  "world": "L_ToyKingdom",
+  "mode": 2,
+  "duration": 1,
+  "tracks": [
+    {
+      "id": "p1",
+      "name": "Player fixture",
+      "enabled": true,
+      "actions": true,
+      "frames": [
+        {
+          "t": 0,
+          "p": {
+            "X": 0,
+            "Y": 0,
+            "Z": 100
+          },
+          "r": {
+            "Pitch": 0,
+            "Yaw": 0,
+            "Roll": 0
+          },
+          "fov": 90,
+          "focusDistance": 5,
+          "lensBlur": 0,
+          "look": {
+            "Pitch": 0,
+            "Yaw": 0,
+            "Roll": 0
+          },
+          "view": {
+            "X": 0,
+            "Y": 0,
+            "Z": 160
+          },
+          "velocity": {
+            "X": 0,
+            "Y": 0,
+            "Z": 0
+          },
+          "movementMode": 1,
+          "customMode": 0,
+          "cameraMode": 1
+        },
+        {
+          "t": 1,
+          "p": {
+            "X": 1,
+            "Y": 0,
+            "Z": 100
+          },
+          "r": {
+            "Pitch": 0,
+            "Yaw": 1,
+            "Roll": 0
+          },
+          "fov": 90,
+          "focusDistance": 5,
+          "lensBlur": 0,
+          "look": {
+            "Pitch": 0,
+            "Yaw": 0,
+            "Roll": 0
+          },
+          "view": {
+            "X": 0,
+            "Y": 0,
+            "Z": 160
+          },
+          "velocity": {
+            "X": 0,
+            "Y": 0,
+            "Z": 0
+          },
+          "movementMode": 1,
+          "customMode": 0,
+          "cameraMode": 1
+        }
+      ],
+      "events": [
+        {
+          "t": 0.2,
+          "type": "bulkGrab",
+          "targets": [
+            {
+              "p": {
+                "X": 100,
+                "Y": 100,
+                "Z": 20
+              },
+              "def": 1,
+              "definition": "TS_ItemDefinition /Game/Items/PDA_Fixture.PDA_Fixture"
+            }
+          ]
+        },
+        {
+          "t": 0.4,
+          "type": "toolThrow",
+          "charge": 1,
+          "clean": true
+        }
+      ],
+      "initialHeld": [],
+      "appearance": {
+        "PresetIndex": 0,
+        "SkinColorIndex": 1,
+        "SlotMeshIndices": [
+          0,
+          1
+        ],
+        "SlotColorIndices": [
+          1,
+          2
+        ]
+      }
+    }
+  ],
+  "timeScale": 1
+}

@@ -1,0 +1,50 @@
+{
+  "schema": 2,
+  "kind": "camera",
+  "world": "L_ToyKingdom",
+  "mode": 0,
+  "duration": 1,
+  "tracks": [
+    {
+      "id": "camera",
+      "name": "Camera fixture",
+      "enabled": true,
+      "actions": true,
+      "frames": [
+        {
+          "t": 0,
+          "p": {
+            "X": 0,
+            "Y": 0,
+            "Z": 100
+          },
+          "r": {
+            "Pitch": 0,
+            "Yaw": 0,
+            "Roll": 0
+          },
+          "fov": 90,
+          "focusDistance": 5,
+          "lensBlur": 0
+        },
+        {
+          "t": 1,
+          "p": {
+            "X": 1,
+            "Y": 0,
+            "Z": 100
+          },
+          "r": {
+            "Pitch": 0,
+            "Yaw": 1,
+            "Roll": 0
+          },
+          "fov": 90,
+          "focusDistance": 5,
+          "lensBlur": 0
+        }
+      ],
+      "events": []
+    }
+  ]
+}
