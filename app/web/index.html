@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#121924"><title>Toybox Together</title>
+  <link rel="icon" href="/icon.svg"><link rel="manifest" href="/manifest.webmanifest"><link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<aside class="sidebar">
+  <a class="brand" href="/?page=saves"><img src="/icon.svg" alt=""><span>Toybox<small>TOGETHER</small></span></a>
+  <div class="game-label">Put Your Toys Away Together!</div>
+  <nav aria-label="Страницы панели">
+    <a class="nav" href="/?page=saves" data-page="saves"><span aria-hidden="true">💾</span> Сохранения</a>
+    <a class="nav" href="/?page=cheats" data-page="cheats"><span aria-hidden="true">🎮</span> Камера и читы</a>
+    <a class="nav" href="/?page=replays" data-page="replays"><span aria-hidden="true">🎬</span> Записи и повторы</a>
+    <div id="cheat-sections" class="section-nav" hidden>
+      <a href="/?page=cheats#cat-camera" data-section="cat-camera"><span aria-hidden="true">🎥</span> Камера</a>
+      <a href="/?page=cheats#cat-loot" data-section="cat-loot"><span aria-hidden="true">🧸</span> Игрушки</a>
+      <a href="/?page=cheats#cat-abilities" data-section="cat-abilities"><span aria-hidden="true">⚡</span> Способности</a>
+      <a href="/?page=cheats#cat-world" data-section="cat-world"><span aria-hidden="true">🏪</span> Магазин</a>
+      <a href="/?page=cheats#cat-visual" data-section="cat-visual"><span aria-hidden="true">🎨</span> Вид и время</a>
+    </div>
+  </nav>
+  <div class="sidebar-bottom"><span id="version">v4.0.1</span><button id="install-pwa" hidden>Установить приложение</button><div>Всё хранится на этом компьютере</div></div>
+</aside>
+<main>
+  <header><div class="status"><i id="status-dot"></i><span id="connection">Подключаюсь…</span></div><div class="game-actions"><button id="launch">Запустить игру</button><button id="close" class="quiet">Закрыть игру</button></div></header>
+  <div id="operation" class="operation" hidden><span class="spinner"></span><span id="operation-text"></span></div>
+  <div id="notice" class="notice" hidden></div>
+  <section id="saves" class="page">
+    <div class="page-heading"><div><div class="eyebrow">ВАШИ МОМЕНТЫ</div><h1>Сохранения</h1><p>Вернитесь к удачному кадру или начните эксперимент заново.</p></div><button id="capture" class="primary">＋ Снять и сохранить</button></div>
+    <div class="gallery-controls"><div class="inline"><select id="playthrough" aria-label="Прохождение"><option value="">Все прохождения</option><option>Основное прохождение</option></select><button id="new-playthrough" class="quiet">＋ Прохождение</button></div><div class="inline"><label class="file-button">Импорт<input id="import" type="file" accept=".zip" hidden></label><button id="trash">Корзина <span id="trash-count">0</span></button></div></div>
+    <div id="save-limit" class="hint"></div><div id="gallery" class="gallery"></div>
+    <div id="empty" class="empty" hidden><div>▦</div><h2>Сохраните первый момент</h2><p>Откройте игровой уровень и нажмите «Снять и сохранить».<br>Состояние игры и скриншот попадут в один снапшот.</p></div>
+    <details class="disk"><summary>Сохранить последнюю запись на диске</summary><p>Для закрытой игры. Без скриншота и координат персонажа.</p><div class="inline"><select id="disk-world" aria-label="Карта"><option value="L_ToyKingdom">Toy Kingdom</option><option value="L_Shopping_mall">Shopping Mall</option><option value="L_SkyKids_Store">SkyKids Store</option></select><select id="disk-mode" aria-label="Режим"><option value="0">Классический</option><option value="1">На время</option><option value="2">Свободная игра</option></select><button id="disk-save">Создать снапшот</button></div></details>
+  </section>
+  <section id="cheats" class="page" hidden>
+    <div class="page-heading"><div><h1>Камера и читы</h1><p>Камера работает локально. Изменения мира — у хоста.</p></div><span id="role" class="tag">Игра не подключена</span></div>
+    <div class="cheat-layout">
+      <section class="cheat-section camera-section" id="cat-camera" aria-labelledby="camera-title">
+        <div class="section-head"><h2 id="camera-title">🎥 Камера</h2><div class="inline"><span class="tag">CTRL + P / NUM9</span><label class="switch"><input id="freecam" aria-label="Свободная камера" type="checkbox"><span></span></label></div></div>
+        <p class="section-hint">WASD — полёт · Q / E — высота · Shift ×5 · без столкновений</p>
+        <div class="control-grid">
+          <div class="control"><label for="speed">Скорость полёта <small>колесо</small></label><div class="range"><input id="speed" aria-label="Скорость полёта" type="range" min="0.2" max="200" step="0.01"><output id="speed-out"></output></div></div>
+          <div class="control"><label for="fov">Угол обзора <small>Alt + колесо</small></label><div class="range"><input id="fov" aria-label="Угол обзора" type="range" min="20" max="150" step="1"><output id="fov-out"></output></div></div>
+          <div class="control"><label for="sensitivity">Чувствительность мыши</label><div class="range"><input id="sensitivity" aria-label="Чувствительность мыши" type="range" min="0.01" max="0.5" step="0.01"><output id="sensitivity-out"></output></div></div>
+          <div class="control"><label for="smoothing">Плавность полёта <small>0 — мгновенно</small></label><div class="range"><input id="smoothing" aria-label="Плавность движения" type="range" min="0" max="1" step="0.02"><output id="smoothing-out"></output></div></div>
+          <div class="control"><label for="rotationSmoothing">Плавность поворота <small>мышь</small></label><div class="range"><input id="rotationSmoothing" aria-label="Плавность поворота камеры" type="range" min="0" max="1" step="0.01"><output id="rotationSmoothing-out"></output></div></div>
+        </div>
+        <details class="optics"><summary>🔭 Оптика и глубина резкости</summary><div class="control-grid">
+          <div class="control"><label for="focalLength">Фокусное расстояние <small>экв. 36 мм · меняет FOV</small></label><div class="range"><input id="focalLength" aria-label="Фокусное расстояние" type="range" min="5" max="102" step="0.1"><output id="focalLength-out"></output></div></div>
+          <div class="control"><label for="focusDistance">Дистанция фокуса <small>Ctrl + колесо</small></label><div class="range"><input id="focusDistance" aria-label="Дистанция фокуса" type="range" min="0.1" max="1000" step="0.1"><output id="focusDistance-out"></output></div></div>
+          <div class="control"><label for="lensBlur">Размытие объектива <small>Shift + колесо · 0 — выкл.</small></label><div class="range"><input id="lensBlur" aria-label="Размытие объектива" type="range" min="0" max="10" step="0.1"><output id="lensBlur-out"></output></div></div>
+        </div></details>
+      </section>
+      <section class="cheat-section loot-section" id="cat-loot" aria-labelledby="loot-title">
+        <div class="section-head"><h2 id="loot-title">🧸 Игрушки</h2><label class="toggle-label"><span>Инструмент <kbd>0</kbd></span><span class="switch"><input id="tool" aria-label="Инструмент игрушек" type="checkbox"><span></span></span></label></div>
+        <p class="section-hint">ЛКМ — ближайшие или стеллаж под прицелом · ПКМ — аккуратный поток · колесо — количество</p>
+        <div class="control"><label for="batch">Количество за раз</label><div class="range"><input id="batch" aria-label="Количество игрушек" type="range" min="10" max="200" step="10"><output id="batch-out"></output></div></div>
+        <div class="hands-row"><label for="hands">Вместимость рук</label><div class="inline wrap"><input id="hands" aria-label="Вместимость рук" type="number" min="1" max="10000" value="200"><button id="hands-apply">Применить</button><button id="hands-reset" class="quiet">Сбросить</button></div><p id="held-count">В руках: —</p><p id="throw-count" class="section-hint" hidden></p></div>
+      </section>
+      <section class="cheat-section abilities-section" id="cat-abilities" aria-labelledby="abilities-title">
+        <div class="section-head"><h2 id="abilities-title">⚡ Способности</h2></div>
+        <label class="cooldown-row"><span>Без кулдаунов <small>слоты 1–7</small></span><span class="switch"><input id="noCooldown" aria-label="Без кулдаунов" type="checkbox"><span></span></span></label>
+        <p class="section-hint">Сначала откройте способности в улучшениях.</p>
+        <div class="control upgrade-control"><label for="upgrade-level">Уровень улучшений</label><div class="inline wrap"><input id="upgrade-level" aria-label="Уровень улучшений" type="number" min="0" max="5" value="5"><button data-command="upgrades" data-input="upgrade-level">Применить уровень</button></div></div>
+      </section>
+      <section class="cheat-section world-section" id="cat-world" aria-labelledby="world-title">
+        <div class="section-head"><h2 id="world-title">🏪 Магазин</h2></div>
+        <div class="world-grid">
+          <div class="control shelf-controls"><h3>📦 Полки</h3><div class="inline shelf-amount"><label for="shelf-count">Количество</label><input id="shelf-count" aria-label="Количество для полок" type="number" min="1" max="1000000" step="1" value="100"><label class="shelf-all"><input id="shelf-all" type="checkbox"> Все</label></div><div class="inline wrap"><button data-shelf="fill">Расставить на полки</button><button data-shelf="clear">Снять на пол</button></div><button data-shelf="aimed" class="aimed-shelf">🎯 Заполнить шкаф под прицелом</button><p class="section-hint">Шкаф — целиком, подходящими игрушками с пола. Снятие — быстро, равномерно по свободному полу.</p><p id="shelf-result" class="section-hint" aria-live="polite" hidden></p><details class="stock-shelves"><summary>✨ С перелётом</summary><button data-command="flyShelves" data-input="shelf-count">Перелёт на полки</button></details></div>
+          <div class="control"><label for="money-value">💰 Деньги</label><div class="inline"><input id="money-value" aria-label="Деньги" type="number" min="0" max="10000000" value="100000"><button data-command="money" data-input="money-value">Установить</button></div></div>
+          <div class="control"><h3>🌤️ Персонаж и небо</h3><div class="inline wrap"><button data-command="randomize">Внешность</button><button data-command="sky">Следующее небо</button><button data-command="skyGlitch">Глитч неба</button></div></div>
+          <div class="control"><h3>🎰 Автомат</h3><button data-command="resetMachine">Сбросить ожидание</button></div>
+        </div>
+      </section>
+      <section class="cheat-section visual-section" id="cat-visual" aria-labelledby="visual-title">
+        <div class="section-head"><h2 id="visual-title">🎨 Вид и время</h2></div>
+        <div class="visual-grid">
+          <div class="control"><label for="time-value">⏱️ Время</label><div class="inline"><select id="time-value" aria-label="Скорость времени"><option value="1">Обычная скорость</option><option value="0.5">Скорость ×0.5</option><option value="0.1">Скорость ×0.1</option><option value="2">Скорость ×2</option></select><button data-command="timeScale" data-input="time-value">Применить</button></div><button data-command="pause" class="quiet small-action">Пауза</button></div>
+          <div class="control"><h3>✨ Чистый кадр</h3><div class="inline wrap"><button data-command="screenMessages">Скрыть сообщения</button><button data-command="enableMessages">Вернуть</button><button data-command="motionBlur" data-value="0">Без размытия</button><button data-command="depthOfField" data-value="0">Без DOF</button></div></div>
+          <div class="control"><label for="fps-value">🎞️ Частота кадров</label><div class="inline"><select id="fps-value" aria-label="Частота кадров"><option>60</option><option>100</option><option>120</option><option value="0">Без ограничения</option></select><button data-command="fps" data-input="fps-value">Применить</button></div></div>
+          <div class="control"><label for="render-value">🔍 Масштаб рендера</label><div class="inline"><select id="render-value" aria-label="Масштаб рендера"><option value="100">100% · нативный</option><option value="150">150%</option><option value="200">200%</option></select><button data-command="renderScale" data-input="render-value">Применить</button></div></div>
+        </div>
+      </section>
+    </div>
+  </section>
+  <section id="replays" class="page" hidden>
+    <div class="page-heading"><div><div class="eyebrow">ДВИЖЕНИЕ В КАДРЕ</div><h1>Записи и повторы</h1><p>Полёт камеры или игроки с настоящими действиями в мире.</p></div></div>
+    <div class="record-bar">
+      <div class="inline wrap"><select id="record-kind" aria-label="Вид записи"><option value="camera">🎥 Свободная камера</option><option value="players">👥 Игроки и действия</option></select><button id="record-start" class="record-button">● Начать запись</button><button id="record-pause">Пауза</button><button id="record-stop">Завершить</button></div>
+      <div class="record-status"><span id="record-state">Готов к записи</span><strong id="record-time">0:00</strong><div class="range replay-speed"><label for="replay-speed">Скорость повтора</label><input id="replay-speed" aria-label="Скорость повтора" type="range" min="0.1" max="4" step="0.1" value="1"><output id="replay-speed-out">×1</output></div></div>
+      <div class="playback-controls inline wrap"><button id="replay-start" class="primary">▶ Начать</button><button id="replay-restart">↶ Сначала</button><label class="observer-toggle"><input id="replay-camera" type="checkbox">🎥 Свободная камера</label><span id="loaded-replay" class="date">Выберите повтор и нажмите «Загрузить».</span></div>
+      <div class="replay-timeline"><label for="replay-timeline">Таймлайн</label><input id="replay-timeline" aria-label="Позиция повтора" type="range" min="0" max="1" step="0.01" value="0" disabled><output id="replay-timeline-out">0:00 / 0:00</output></div>
+      <p id="timeline-hint" class="section-hint">Камеру можно перематывать; для игроков таймлайн показывает прогресс.</p>
+      <p class="section-hint"><kbd>F6</kbd> запись / пауза · <kbd>F7</kbd> повтор / пауза · <kbd>F8</kbd> завершить</p>
+    </div>
+    <p class="hint">«Загрузить» восстанавливает уровень, игрушки и игроков на старте в паузе. «Начать» запускает движение. «Сначала» заново восстанавливает исходный мир. Во время повтора и паузы можно летать свободной камерой. Перезапись дорожки позволяет отыграть несколько игроков в соло.</p>
+    <div id="replay-gallery" class="gallery"></div><div id="replay-empty" class="empty"><div>🎬</div><h2>Запишите первый дубль</h2><p>Выберите камеру или игроков, начните запись и завершите её клавишей F8.</p></div>
+    <details class="disk"><summary>Корзина повторов</summary><div id="replay-trash"></div></details>
+  </section>
+  <footer>Локальный адрес · 127.0.0.1:18763</footer>
+</main>
+<dialog id="name-dialog"><form method="dialog"><h2 id="name-title">Название</h2><label for="name-value">Название</label><input id="name-value" type="text" maxlength="120" required autocomplete="off"><div class="inline"><button value="cancel" formnovalidate>Отмена</button><button value="save" class="primary">Сохранить</button></div></form></dialog>
+<dialog id="image-dialog"><button class="dialog-close">×</button><img id="large-image" alt="Скриншот снапшота"></dialog>
+<dialog id="trash-dialog"><button class="dialog-close">×</button><h2>Корзина</h2><p>Удалённые снапшоты можно восстановить.</p><div id="trash-list"></div></dialog>
+<div id="toast" role="status" hidden></div><script src="/app.js"></script>
+</body>
+</html>
+
