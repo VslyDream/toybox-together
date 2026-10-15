@@ -26,8 +26,9 @@ a:focus-visible,button:focus-visible{outline:2px solid #91efd7;outline-offset:3p
 .cheat-section:target{border-color:#6bbba9;box-shadow:0 0 0 1px #6bbba926}
 .camera-section{grid-column:span 7;background:linear-gradient(115deg,#1b3036,#172130)}
 .loot-section{grid-column:span 5}
-.abilities-section{grid-column:span 4}
-.world-section{grid-column:span 8}
+.presets-section{grid-column:span 4}
+.abilities-section{grid-column:span 3}
+.world-section{grid-column:span 5}
 .visual-section{grid-column:span 12}
 .section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
 .section-head h2{font-size:17px;margin:0;white-space:nowrap}
@@ -66,14 +67,14 @@ body:has(#cheats:not([hidden])) footer{padding:18px 0 22px}
   .sidebar{width:195px;padding:22px 14px}
   main{margin-left:195px;padding:0 20px}
   .cheat-section{padding:14px}
-  .camera-section,.loot-section,.abilities-section,.world-section{grid-column:span 6}
+  .camera-section,.loot-section,.presets-section,.abilities-section,.world-section{grid-column:span 6}
   .visual-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
   .visual-grid>.control+.control{border-left:0;padding-left:0}
   .control-grid,.world-grid{gap:12px}
   .hands-row .inline{display:flex;margin-left:0}
 }
 @media(max-width:850px){
-  .camera-section,.loot-section,.abilities-section,.world-section{grid-column:span 12}
+  .camera-section,.loot-section,.presets-section,.abilities-section,.world-section{grid-column:span 12}
   .hands-row .inline{display:inline-flex;margin-left:8px}
 }
 @media(max-width:700px){
@@ -111,3 +112,37 @@ kbd{display:inline-block;font:11px inherit;border:1px solid var(--line);border-r
 .playback-controls{border-top:1px solid var(--line);padding-top:12px;margin-top:12px}.observer-toggle{display:flex;align-items:center;gap:7px}.replay-timeline{display:grid;grid-template-columns:auto minmax(100px,1fr) auto;align-items:center;gap:12px;margin-top:14px}.replay-timeline output{font-variant-numeric:tabular-nums;color:var(--muted);min-width:100px;text-align:right}.replay-card.loaded{outline:1px solid #75dfc5}.replay-timeline input:disabled{opacity:.75}
 #replay-gallery{align-items:start}
 .shelf-amount{gap:8px;margin-bottom:8px}.shelf-amount>label{font-size:12px}.shelf-amount input[type=number]{width:92px}.shelf-all{display:flex;align-items:center;gap:5px;color:var(--muted)}.shelf-all input{width:auto}.aimed-shelf{margin-top:7px}.stock-shelves{margin-top:8px;font-size:12px;color:var(--muted)}.stock-shelves summary{cursor:pointer}.stock-shelves button{margin-top:7px}#shelf-result{color:#a9e5d4}
+
+/* v4.0.1-direct: inline styles are blocked by the panel CSP, so extra styles live here */
+.aperture-range{align-items:flex-start}
+.aperture-range output{padding-top:4px}
+.aperture-track{flex:0 1 260px;max-width:260px;min-width:0;display:flex;flex-direction:column;gap:6px}
+.aperture-track input{width:100%;max-width:none}
+@media(max-width:700px){.aperture-track{flex:1 1 auto;max-width:none}}
+#aperture-marks{position:relative;height:12px;font-size:10px;line-height:12px;color:#8da2bd;font-variant-numeric:tabular-nums}
+#aperture-marks span{position:absolute;top:0;transform:translateX(-50%);white-space:nowrap}
+.preset-select-row{margin-top:12px}
+#focus-marks{position:relative;height:12px;font-size:10px;line-height:12px;color:#8da2bd;font-variant-numeric:tabular-nums}
+#focus-marks span{position:absolute;top:0;transform:translateX(-50%);white-space:nowrap}
+#bokeh-marks{position:relative;height:12px;font-size:10px;line-height:12px;color:#8da2bd}
+#bokeh-marks span{position:absolute;top:0;transform:translateX(-50%);white-space:nowrap}
+#glow-marks{position:relative;height:12px;font-size:10px;line-height:12px;color:#8da2bd;font-variant-numeric:tabular-nums}
+#glow-marks span{position:absolute;top:0;transform:translateX(-50%);white-space:nowrap}
+/* Выпадающие списки на странице читов — по высоте и боковым отступам как кнопки (стрелка нарисована градиентом: панель не разрешает картинки data:) */
+.cheat-section select{-webkit-appearance:none;appearance:none;box-sizing:border-box;height:32px;min-height:32px;line-height:16px;padding:7px 27px 7px 9px;background-color:#222d3e;background-image:linear-gradient(45deg,transparent 50%,#9fb4ca 50%),linear-gradient(135deg,#9fb4ca 50%,transparent 50%);background-position:calc(100% - 14px) 50%,calc(100% - 9px) 50%;background-size:5px 5px,5px 5px;background-repeat:no-repeat;cursor:pointer}
+.cheat-section select:hover{background-color:#30405a}
+.cheat-section select:disabled{opacity:.4;cursor:default}
+/* Пресеты графики: список, пометка и переключатель в одну строку, переключатель справа */
+.preset-row{display:flex;align-items:center;flex-wrap:nowrap}
+.preset-row small{white-space:normal}
+.preset-row .preset-toggle{margin-left:auto;flex-shrink:0}
+/* Пресеты графики: описание выбранного пресета и сводная таблица */
+.preset-desc{font-size:12px;line-height:1.5;color:#a9bccf;margin:12px 0 0}
+#preset-table{margin-top:16px}
+.preset-table{width:100%;table-layout:fixed;border-collapse:collapse;font-size:11px;line-height:1.3;font-variant-numeric:tabular-nums}
+.preset-table th,.preset-table td{padding:3px 3px;text-align:center;white-space:normal;overflow-wrap:anywhere}
+.preset-table tr:first-child th:first-child{width:34%}
+.preset-table tr:first-child th{color:#9fb4ca;font-weight:600;border-bottom:1px solid #2c3a4e;padding-bottom:5px}
+.preset-table th[scope=row]{text-align:left;font-weight:400;color:#8fa8bc}
+.preset-table td{color:#d1ddeb}
+.preset-table .active{background:#233a3d;color:#88e3cf}

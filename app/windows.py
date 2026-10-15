@@ -76,6 +76,30 @@ class MSLLHOOKSTRUCT(C.Structure):
 class KBDLLHOOKSTRUCT(C.Structure):
     _fields_=[('vk',W.DWORD),('scan',W.DWORD),('flags',W.DWORD),('time',W.DWORD),('extra',C.c_size_t)]
 
+class XINPUT_GAMEPAD(C.Structure):
+    _fields_=[('buttons',W.WORD),('lt',C.c_ubyte),('rt',C.c_ubyte),('lx',C.c_short),('ly',C.c_short),('rx',C.c_short),('ry',C.c_short)]
+class XINPUT_STATE(C.Structure):
+    _fields_=[('packet',W.DWORD),('pad',XINPUT_GAMEPAD)]
+_xinput=None
+for _name in ('xinput1_4','xinput1_3','xinput9_1_0'):
+    try: _xinput=C.WinDLL(_name); break
+    except OSError: pass
+def _stick(x,y,dead):
+    import math
+    m=math.hypot(x,y)
+    if m<=dead: return 0.0,0.0
+    k=min(1.0,(m-dead)/(32767-dead))/m
+    return round(x*k,4),round(y*k,4)
+def read_gamepad():
+    """First connected XInput pad (Steam Input virtual pad included), or None."""
+    if not _xinput: return None
+    state=XINPUT_STATE()
+    for i in range(4):
+        if _xinput.XInputGetState(i,C.byref(state))==0:
+            g=state.pad; lx,ly=_stick(g.lx,g.ly,7849); rx,ry=_stick(g.rx,g.ry,8689)
+            return dict(lx=lx,ly=ly,rx=rx,ry=ry,lt=round(max(0,g.lt-30)/225,3),rt=round(max(0,g.rt-30)/225,3),buttons=g.buttons)
+    return None
+
 class Input:
     def __init__(self,bridge,state_fn,pid_fn):
         self.bridge=Path(bridge); self.state_fn=state_fn; self.pid_fn=pid_fn
@@ -134,7 +158,7 @@ class Input:
             if code>=0:
                 event=C.cast(lp,C.POINTER(KBDLLHOOKSTRUCT)).contents
                 if event.vk in self.hotkeys:
-                    if event.vk!=0x69 and self.state_fn().get('version') not in ('2.0.0','4.0.1'):return user.CallNextHookEx(None,code,wp,lp)
+                    if event.vk!=0x69 and self.state_fn().get('version') not in ('2.0.0','4.0.1','4.1.0'):return user.CallNextHookEx(None,code,wp,lp)
                     if wp in (0x101,0x105):
                         consumed=event.vk in self.key_down;self.key_down.discard(event.vk)
                         if consumed:return 1
@@ -167,7 +191,8 @@ class Input:
                 dx,dy,wheel=self.dx,self.dy,self.wheel
             keys={key:bool(user.GetAsyncKeyState(vk)&0x8000) if active else False for key,vk in [('w',87),('a',65),('s',83),('d',68),('q',81),('e',69),('shift',16),('alt',18),('ctrl',17),('lmb',1),('rmb',2)]}
             if active and self.state_fn().get('tool'): keys.update(self.buttons)
+            pad=read_gamepad() if active else None
             self.seq+=1
-            try: atomic_json(self.bridge/'input.json',dict(seq=self.seq,focused=active,dx=dx,dy=dy,wheel=wheel,session=self.session,cameraToggle=self.hotkeys[0x69][1],toolToggle=self.hotkeys[0x30][1],recordToggle=self.hotkeys[0x75][1],playToggle=self.hotkeys[0x76][1],stopToggle=self.hotkeys[0x77][1],keys=keys,time=time.time()))
+            try: atomic_json(self.bridge/'input.json',dict(seq=self.seq,focused=active,pad=pad,dx=dx,dy=dy,wheel=wheel,session=self.session,cameraToggle=self.hotkeys[0x69][1],toolToggle=self.hotkeys[0x30][1],recordToggle=self.hotkeys[0x75][1],playToggle=self.hotkeys[0x76][1],stopToggle=self.hotkeys[0x77][1],keys=keys,time=time.time()))
             except OSError: pass
             time.sleep(1/120)

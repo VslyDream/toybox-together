@@ -55,7 +55,7 @@ class App:
     def persist_settings(self):
         while True:
             s=self.state()
-            settings={k:s[k] for k in ('speed','fov','sensitivity','smoothing','rotationSmoothing','focusDistance','lensBlur','batch','hands','noCooldown') if k in s}
+            settings={k:s[k] for k in ('speed','fov','sensitivity','smoothing','rotationSmoothing','focusDistance','lensBlur','batch','hands','noCooldown','maxFps','presetEnabled','preset','bokeh','bokehBlades','glow') if k in s}
             if settings and settings!=self.settings_seen:
                 self.settings_seen=settings; self.config['settings']=settings
                 try: atomic_json(self.config_path,self.config)
@@ -82,8 +82,15 @@ class App:
         if digest(self.exe)!=MANIFEST['sha256']: raise ValueError('Версия игры изменилась. Установите совместимый пакет мода.')
         if self.config.get('test'):
             subprocess.Popen([str(self.exe),'MyToyStore','-ToxicApproved','-windowed','-ResX=1280','-ResY=720','-UserDir='+str(Path(self.config['testSavedDir']).parent)],cwd=self.game,creationflags=0x08000000)
+        elif self.config.get('launchDirect',False):
+            # Direct launch of the Shipping exe (no Steam launcher), as with the user's shortcut.
+            steam=self.game.parent.parent.parent/'steam.exe'
+            if steam.exists():
+                # Steam Input (virtual Xbox pad) needs the Steam client running in this bottle.
+                subprocess.Popen([str(steam),'-silent'],cwd=str(steam.parent),close_fds=True,creationflags=0x00000008|0x00000200); time.sleep(30)
+            subprocess.Popen([str(self.exe)]+list(self.config.get('launchArgs',['ToxicApproved'])),cwd=str(self.exe.parent),close_fds=True,creationflags=0x00000008|0x00000200)
         else: os.startfile('steam://rungameid/'+MANIFEST['appId'])
-        self.wait(lambda:self.pid(),60,'Steam не запустил игру.')
+        self.wait(lambda:self.pid(),60,'Игра не запустилась.')
     def wait(self,predicate,timeout,error):
         until=time.monotonic()+timeout
         while time.monotonic()<until:
@@ -218,7 +225,7 @@ class App:
             time.sleep(.3)
     def record_replay(self,b):
         s=self.wait(self.state,8,'Игра занята. Дождитесь окончания текущих действий.')
-        if s.get('version')!='4.0.1':raise ValueError('Для записей нужен перезапуск игры с модом v4.')
+        if s.get('version') not in ('4.0.1','4.1.0'):raise ValueError('Для записей нужен перезапуск игры с модом v4.')
         if s.get('replay',{}).get('state')=='finished':
             self.rpc('replayStop');self.wait(lambda:self.state().get('replay',{}).get('state')=='idle',3,'Повтор ещё завершается.');s=self.state()
         if s.get('replay',{}).get('state') not in (None,'idle'):raise ValueError('Сначала завершите текущую запись или повтор.')
@@ -247,7 +254,7 @@ class App:
             self.replays.patch(m['id'],{'deleted':True});raise
     def load_replay(self,b):
         s=self.wait(self.state,8,'Игра занята. Дождитесь окончания текущих действий.')
-        if s.get('version')!='4.0.1':raise ValueError('Для повторов нужен перезапуск игры с модом v4.')
+        if s.get('version') not in ('4.0.1','4.1.0'):raise ValueError('Для повторов нужен перезапуск игры с модом v4.')
         camera=None
         if b.get('keepCamera') and s.get('freecam') and s.get('cameraPosition') and s.get('cameraRotation'):
             camera=dict(p=s['cameraPosition'],r=s['cameraRotation'],fov=s['fov'],focusDistance=s['focusDistance'],lensBlur=s['lensBlur'])
@@ -266,7 +273,7 @@ class App:
         return {'replay':m['id'],'track':track}
     def play_replay(self,b):
         s=self.wait(self.state,8,'Игра занята. Дождитесь окончания текущих действий.')
-        if s.get('version')!='4.0.1':raise ValueError('Для повторов нужен перезапуск игры с модом v4.')
+        if s.get('version') not in ('4.0.1','4.1.0'):raise ValueError('Для повторов нужен перезапуск игры с модом v4.')
         r=s.get('replay',{})
         # Restart and overdub rebuild the baseline; starting a prepared take does not.
         if b.get('restart') or b.get('track') is not None or (r.get('state')=='finished' and r.get('id')==b.get('id')):

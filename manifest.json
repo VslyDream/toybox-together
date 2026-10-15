@@ -1,14 +1,21 @@
 {
   "name": "Toybox Together",
-  "version": "4.0.1",
+  "version": "4.1.0",
   "appId": "5041530",
-  "buildId": "25826322",
+  "buildId": "25943377",
   "executable": "MyToyStore/Binaries/Win64/MyToyStore-Win64-Shipping.exe",
-  "sha256": "38ddbacf699fa16013006733344538f3c62a493fb3fe64302bdd9f6028596a74",
+  "sha256": "ea9dd89496bbfd65f751d2848c214b748b77ea4618f2327fc29618e29aa81b2b",
   "loader": "UE4SS_v3.0.1-1161-g6eb3d9bc",
   "engine": "5.8",
   "port": 18763,
   "compatibleSaveHashes": [
-    "ea65fc52dba2ac1fe5582ea39e6ae8843a44a7f767a9e6db88338955314618f6"
+    "ea65fc52dba2ac1fe5582ea39e6ae8843a44a7f767a9e6db88338955314618f6",
+    "38ddbacf699fa16013006733344538f3c62a493fb3fe64302bdd9f6028596a74"
+  ],
+  "previousBuilds": [
+    {
+      "buildId": "25826322",
+      "sha256": "38ddbacf699fa16013006733344538f3c62a493fb3fe64302bdd9f6028596a74"
+    }
   ]
 }

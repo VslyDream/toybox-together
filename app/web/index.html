@@ -16,12 +16,13 @@
     <div id="cheat-sections" class="section-nav" hidden>
       <a href="/?page=cheats#cat-camera" data-section="cat-camera"><span aria-hidden="true">🎥</span> Камера</a>
       <a href="/?page=cheats#cat-loot" data-section="cat-loot"><span aria-hidden="true">🧸</span> Игрушки</a>
+      <a href="/?page=cheats#cat-presets" data-section="cat-presets"><span aria-hidden="true">🎛️</span> Пресеты</a>
       <a href="/?page=cheats#cat-abilities" data-section="cat-abilities"><span aria-hidden="true">⚡</span> Способности</a>
       <a href="/?page=cheats#cat-world" data-section="cat-world"><span aria-hidden="true">🏪</span> Магазин</a>
       <a href="/?page=cheats#cat-visual" data-section="cat-visual"><span aria-hidden="true">🎨</span> Вид и время</a>
     </div>
   </nav>
-  <div class="sidebar-bottom"><span id="version">v4.0.1</span><button id="install-pwa" hidden>Установить приложение</button><div>Всё хранится на этом компьютере</div></div>
+  <div class="sidebar-bottom"><span id="version">v4.1.0</span><button id="install-pwa" hidden>Установить приложение</button><div>Всё хранится на этом компьютере</div></div>
 </aside>
 <main>
   <header><div class="status"><i id="status-dot"></i><span id="connection">Подключаюсь…</span></div><div class="game-actions"><button id="launch">Запустить игру</button><button id="close" class="quiet">Закрыть игру</button></div></header>
@@ -48,16 +49,31 @@
           <div class="control"><label for="rotationSmoothing">Плавность поворота <small>мышь</small></label><div class="range"><input id="rotationSmoothing" aria-label="Плавность поворота камеры" type="range" min="0" max="1" step="0.01"><output id="rotationSmoothing-out"></output></div></div>
         </div>
         <details class="optics"><summary>🔭 Оптика и глубина резкости</summary><div class="control-grid">
-          <div class="control"><label for="focalLength">Фокусное расстояние <small>экв. 36 мм · меняет FOV</small></label><div class="range"><input id="focalLength" aria-label="Фокусное расстояние" type="range" min="5" max="102" step="0.1"><output id="focalLength-out"></output></div></div>
-          <div class="control"><label for="focusDistance">Дистанция фокуса <small>Ctrl + колесо</small></label><div class="range"><input id="focusDistance" aria-label="Дистанция фокуса" type="range" min="0.1" max="1000" step="0.1"><output id="focusDistance-out"></output></div></div>
+          <div class="control"><label for="focalLength">Фокусное расстояние <small>меняет FOV · Alt + колесо</small></label><div class="range"><input id="focalLength" aria-label="Фокусное расстояние" type="range" min="5" max="102" step="0.1"><output id="focalLength-out"></output></div></div>
+          <div class="control"><label for="focusDistance">Дистанция фокуса <small>Ctrl + колесо</small></label><div class="range aperture-range"><div class="aperture-track"><input id="focusDistance" aria-label="Дистанция фокуса" type="range" min="0" max="1000" step="1"><div id="focus-marks" aria-hidden="true"></div></div><output id="focusDistance-out"></output></div></div>
           <div class="control"><label for="lensBlur">Размытие объектива <small>Shift + колесо · 0 — выкл.</small></label><div class="range"><input id="lensBlur" aria-label="Размытие объектива" type="range" min="0" max="10" step="0.1"><output id="lensBlur-out"></output></div></div>
-        </div></details>
+          <div class="control"><label for="bokeh">Боке <small>лепестки диафрагмы</small></label><div class="range aperture-range"><div class="aperture-track"><input id="bokeh" aria-label="Боке" type="range" min="0" max="2" step="1"><div id="bokeh-marks" aria-hidden="true"></div></div><output id="bokeh-label">выкл</output></div></div>
+          <div class="control"><label for="aperture">Диафрагма <small>дублирует «Размытие объектива»</small></label><div class="range aperture-range"><div class="aperture-track"><input id="aperture" aria-label="Диафрагма" type="range" min="0" max="8" step="1"><div id="aperture-marks" aria-hidden="true"></div></div><output id="aperture-out"></output></div></div>
+
+          <div class="control"><label for="glow">Мягкость свечения ламп <small>0 — как в игре</small></label>
+            <div class="range aperture-range"><div class="aperture-track"><input id="glow" aria-label="Мягкость свечения" type="range" min="0" max="3" step="1"><div id="glow-marks" aria-hidden="true"></div></div><output id="glow-out">0</output></div>
+          </div>
+        </div>
+        </details>
       </section>
       <section class="cheat-section loot-section" id="cat-loot" aria-labelledby="loot-title">
         <div class="section-head"><h2 id="loot-title">🧸 Игрушки</h2><label class="toggle-label"><span>Инструмент <kbd>0</kbd></span><span class="switch"><input id="tool" aria-label="Инструмент игрушек" type="checkbox"><span></span></span></label></div>
         <p class="section-hint">ЛКМ — ближайшие или стеллаж под прицелом · ПКМ — аккуратный поток · колесо — количество</p>
         <div class="control"><label for="batch">Количество за раз</label><div class="range"><input id="batch" aria-label="Количество игрушек" type="range" min="10" max="200" step="10"><output id="batch-out"></output></div></div>
         <div class="hands-row"><label for="hands">Вместимость рук</label><div class="inline wrap"><input id="hands" aria-label="Вместимость рук" type="number" min="1" max="10000" value="200"><button id="hands-apply">Применить</button><button id="hands-reset" class="quiet">Сбросить</button></div><p id="held-count">В руках: —</p><p id="throw-count" class="section-hint" hidden></p></div>
+      </section>
+      <section class="cheat-section presets-section" id="cat-presets" aria-labelledby="presets-title">
+        <div class="section-head"><h2 id="presets-title">🎛️ Пресеты графики</h2></div>
+        <div class="control preset-control">
+            <div class="inline preset-row"><select id="preset-select" aria-label="Пресет графики"></select><small>выкл — настройки из игры</small><label class="toggle-label preset-toggle" title="Использовать пресеты мода"><span class="switch"><input type="checkbox" id="preset-enabled" aria-label="Использовать пресеты мода"><span></span></span></label></div>
+            <p id="preset-desc" class="preset-desc"></p>
+            <div id="preset-table"></div>
+        </div>
       </section>
       <section class="cheat-section abilities-section" id="cat-abilities" aria-labelledby="abilities-title">
         <div class="section-head"><h2 id="abilities-title">⚡ Способности</h2></div>
@@ -80,7 +96,7 @@
           <div class="control"><label for="time-value">⏱️ Время</label><div class="inline"><select id="time-value" aria-label="Скорость времени"><option value="1">Обычная скорость</option><option value="0.5">Скорость ×0.5</option><option value="0.1">Скорость ×0.1</option><option value="2">Скорость ×2</option></select><button data-command="timeScale" data-input="time-value">Применить</button></div><button data-command="pause" class="quiet small-action">Пауза</button></div>
           <div class="control"><h3>✨ Чистый кадр</h3><div class="inline wrap"><button data-command="screenMessages">Скрыть сообщения</button><button data-command="enableMessages">Вернуть</button><button data-command="motionBlur" data-value="0">Без размытия</button><button data-command="depthOfField" data-value="0">Без DOF</button></div></div>
           <div class="control"><label for="fps-value">🎞️ Частота кадров</label><div class="inline"><select id="fps-value" aria-label="Частота кадров"><option>60</option><option>100</option><option>120</option><option value="0">Без ограничения</option></select><button data-command="fps" data-input="fps-value">Применить</button></div></div>
-          <div class="control"><label for="render-value">🔍 Масштаб рендера</label><div class="inline"><select id="render-value" aria-label="Масштаб рендера"><option value="100">100% · нативный</option><option value="150">150%</option><option value="200">200%</option></select><button data-command="renderScale" data-input="render-value">Применить</button></div></div>
+          <div class="control"><h3>🧪 Замер производительности</h3><div class="inline wrap"><button data-command="bench">Начать / прервать замер</button></div><p class="hint">Около 2,5 минут: проверяются текущие настройки и четыре пресета — без ограничения и как на съёмке. Включите свободную камеру в начальной точке: в каждом прогоне она сама проедет вправо на минимальной скорости (≈3,2 м) и вернётся. Не трогайте мышь и геймпад.</p><p id="bench-status" class="hint"></p></div>
         </div>
       </section>
     </div>
